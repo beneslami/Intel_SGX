@@ -11,6 +11,10 @@ data and computation where all privileged softwares such as kernel and hyperviso
 An application using Intel SGX extension is built in trusted and un-trusted parts. The application creates an enclave inside its own address space and puts trusted part into that enclave. When the application calls trusted part, it will run in a completely protected mode and external access to enclave data is completely denied.
 ![picture](data/enclave.png)
 
+Enclave code and data are placed in a special memory area called the Enclave Page Cache (EPC). This memory area is encrypted using the Memory Encryption Engine (MEE), a new and dedicated chip. The Enclave Page Cache Map (EPCM) structure is used to store the pages state. It is located inside the protected memory and its size limits the size of the EPC.
+![picture](data/flowchart.png)
+
+
 Intel SGX is the newest technology to solve Secure Remote Computation problem by leveraging trusted hardware
 in the remote computer. Secure Remote Computation is the problem of executing software on a remote computer
 owned and maintained by an untrusted party. The trusted hardware establishes a secure container, and the remote computation service user uploads the desired computation and data into the secure container. The trusted hardware protects the data’s confidentiality and integrity while the computation is being performed on it. For example, a cloud service that performs image processing on confidential medical images could be implemented by having users upload encrypted images. The users would send the encryption keys to software running inside an enclave. The enclave would contain the code for decrypting images, the image processing algorithm, and the code for encrypting the results. The code that receives the uploaded encrypted images and stores them would be left outside the enclave. While SGX provides confidentiality and integrity of the data and computation inside an enclave by isolating it from outside environment, it remains compatible with traditional software layering in the Intel Architecture.
