@@ -29,4 +29,13 @@ To understand briefly how SGX works, some portion of the RAM is marked as PRM so
 ![picture](data/PRM.png)
 According to above picture, we have multiple processes present in the system and each process has its own virtual address space and within this virtual address space each process could have its own enclave. Therefore we would now have a mapping for enclave region within the virtual address space to PRM region in the RAM. So, we could have multiple processes, and each of them having their own enclaves but all of enclaves associated with their own processes would mapped to the same region within the RAM that is the PRM region. EPCM is divided into various sub-regions and we have one entry for each EPC. For example, if there are 1024 EPC regions each of 4 kilo bytes, then there would be 1024 regions in the EPCM, one region is associated with a corresponding EPC. EPCM is used by the hardware for access control. It stores various information related to the corresponding EPC, so EPCM is somewhat similar to the page tables, but difference is that the most of the page tables are managed by the OS while with the SGX the EPCM contents are completely managed by the hardware. There is another data structure inside PRM which is called SECS (SGX Enclave Control Store) which contains global information and metadata about that particular enclave. It is used for data integrity inside enclaves and also for mapping information to the various enclave regions.
 
-Another very important aspect which is supported by Intel SGX is something known as Attestation. SGX supported system can access to another remote SGX supported system via Attestation mechanism. 
+Another very important aspect which is supported by Intel SGX is something known as Attestation. SGX supported system can access to another remote SGX supported system via Attestation mechanism.
+
+------
+When building an enclave, Intel SGX generates cryptographic log of all the build activities such as content, location of each page within the enclave and security flags. This log represents the enclave's software Trusted Computing Base (TCB). The log file afterwards, is converted to a 256-bit string called MRENCLAVE.
+
+Local Attestation: The process by which one enclave attests its Trusted Computing Base (TCB) to another enclave on the same platform.
+
+Remote Attestation: The process by which one enclave attests its TCB to another entity outside of the platform.
+
+Sealing: cryptographically protecting data when it leaves the enclave.
